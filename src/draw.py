@@ -10,8 +10,9 @@
 # Graphics    - Cards images from An Introduction to Interactive Programming in Python
 #
 # Current Version (v1.0 - 21 January 2024):
-#pylint: disable=wildcard-import,line-too-long,unused-wildcard-import
+# File saved in : https://py3.codeskulptor.org/#user309_Qz4BBPIZtH_11.py
 import random
+
 
 try:
     folder = "https://dl.dropboxusercontent.com/scl/fi" #pylint: disable=invalid-name
@@ -34,6 +35,7 @@ try:
             f"{folder}/xeobp120otuarszm58fie/big_card_jfitz_back.png?rlkey=qk77v3srt1k0pgnori06txmbt&dl=0",
             ]
     import simplegui # type: ignore
+    from user309_Kd3jylJSQd_0 import Hand, Card, RANKS, SUITS, card_seq_increment
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
     import os
@@ -43,7 +45,7 @@ except ImportError:
                f"{folder}/small_cards_jfitz_selected.png", f"{folder}/small_cards_joker_selected.png", f"{folder}/small_card_jfitz_back.png",
                f"{folder}/big_cards_jfitz.png", f"{folder}/big_cards_joker.png", f"{folder}/big_cards_jfitz_selected.png",
                f"{folder}/big_cards_joker_selected.png", f"{folder}/big_card_jfitz_back.png"]
-from card import *
+    from card import Hand, Card, RANKS, SUITS, card_seq_increment
 
 screen_size = "Normal" #pylint: disable=invalid-name
 
@@ -73,10 +75,10 @@ PLAYER_NAMES = ["Eric", "Julien", "Guillaume", "HongYu", "Francois", "Daniel",\
                 "Philippe", "Simon", "Alexandre", "Jean-Serge", "Sepehr", 'Jerry',\
                 "Charlou", "Raphael", "Nathan", "Antoine", "Hugues", "Carlos",
                 "Jennifer", "Hadhami", "Marnie", "Caroline", "Catherine",\
-                "Sara", "Anne", "Stéphanie", "Perline", "Audrée", "Louise",\
-                "Marie", "Geneviève", "Chloée", "Hélène", "Mika", "Myriam",\
-                "Irma",  "Mélanie", "Marlène", "Robert", "Amir", "Richard",\
-                "Jim", "Moses", "Evan", "Émile", "Eduardo"]
+                "Sara", "Anne", "Stephanie", "Perline", "Audree", "Louise",\
+                "Marie", "Genevieve", "Chloee", "Helene", "Mika", "Myriam",\
+                "Irma",  "Melanie", "Marlene", "Robert", "Amir", "Richard",\
+                "Jim", "Moses", "Evan", "Emile", "Eduardo"]
 
 def get_resize_item(val):
     """ resize_item """
@@ -332,7 +334,7 @@ class DrawCard(Rectangle):
         super().__init__(posx, posy, CARD_SIZE[0], CARD_SIZE[1], text=str(card))
         self._ca = card
         self._it = istext
-        super().set_selected(isselect)
+        self.set_selected(isselect)
 
     def get_card(self):
         """ get card """
@@ -807,60 +809,60 @@ class LanguageVal:
             "Phase 4 Winning. The first player to win becomes President, the second the Vice.\n"\
 
         self.regle = ""\
-            "Règle du jeu du Président\n"\
-            "Il y a 4 joueurs, le président, le vice, le concierge et le nul\n"\
+            "Regle du jeu du President\n"\
+            "Il y a 4 joueurs, le president, le vice, le concierge et le nul\n"\
             "L'ordre des valeurs est 3,4,5,6,7,8,9,10,J,Q,K,A,2,Joker.\n"\
-            "Un joker peut battre n'importe quel double, triple or quadruple.\n"\
-            "Un 2 peut battre n'importe quel double, deux 2 triple, troix 2 quadruple.\n"\
-            "Le nul peut égaler n'importe quelle carte pour gagner le tour\n"\
-            "Phase 1 Distribution. Au premier tour toutes les cartes sont montrées\n"\
-            "Le président peut accepter ou refuser les 2 premières cartes offertes\n"\
-            "Phase 2 Échange. Une fois toutes les cartes distribuées.\n"\
-            "Le président donne 2 cartes au nul et reçoit les 2 meilleures du nul\n"\
-            "Le vice donne 1 carte au concierge et reçoit la meilleure du concierge\n"\
-            "Phase 3 Jeu. Le premier tour est commencé par le président\n"\
-            "Le gagnant du tour précédent commence le suivant. Un tour fait au plus chaque joueur\n"\
-            "Tous les joueurs participants à une séquence donnent une ou des cartes\n"\
-            "Phase 4 Gagner. Le premier joueur devient le président, le second le vice\n"\
+            "Un joker peut battre n\'importe quel double, triple or quadruple.\n"\
+            "Un 2 peut battre n\'importe quel double, deux 2 triple, troix 2 quadruple.\n"\
+            "Le nul peut egaler n\'importe quelle carte pour gagner le tour\n"\
+            "Phase 1 Distribution. Au premier tour toutes les cartes sont montrees\n"\
+            "Le president peut accepter ou refuser les 2 premieres cartes offertes\n"\
+            "Phase 2 Echange. Une fois toutes les cartes distribuees.\n"\
+            "Le president donne 2 cartes au nul et recoit les 2 meilleures du nul\n"\
+            "Le vice donne 1 carte au concierge et recoit la meilleure du concierge\n"\
+            "Phase 3 Jeu. Le premier tour est commence par le president\n"\
+            "Le gagnant du tour precedent commence le suivant. Un tour fait au plus chaque joueur\n"\
+            "Tous les joueurs participants a une sequence donnent une ou des cartes\n"\
+            "Phase 4 Gagner. Le premier joueur devient le president, le second le vice\n"\
 
-        self.francais = { "title":"Jeu du Président", "menu":"Menu", "language":"Language", "English":"English",
-            "Francais":"Français", "Sequence":"Donne carte\n si séquence", "No_Seq":"Désactivée", "3_Card":"3 joueurs",
+        self.francais = { "title":"Jeu du President", "menu":"Menu", "language":"Language", "English":"English",
+            "Francais":"Francais", "Sequence":"Donne carte\n si sequence", "No_Seq":"Desactivee", "3_Card":"3 joueurs",
             "4_Card":"4 joueurs", "choice":"Phase du choix", "1_choice":"President a 1 choix",
-            "2_choice":"Président a 2 choix\n Vice a 1 choix",
-            "exchange":"Échange des cartes", "lowest":"Carte plus faible", "select":"Joueur décide",
-            "position":"Jouer rôle", "pres":"Président", "vice":"Vice", "conc":"Concierge", "nul":"Nul",
-            "options": "Options", "main":"Menu Principal", "reset":"Redémarrer",
+            "2_choice":"President a 2 choix\n Vice a 1 choix",
+            "exchange":"Echange des cartes", "lowest":"Carte plus faible", "select":"Joueur decide",
+            "position":"Jouer role", "pres":"President", "vice":"Vice", "conc":"Concierge", "nul":"Nul",
+            "options": "Options", "main":"Menu Principal", "reset":"Redemarrer",
             "p_choices": "Phase de Choix", "Game":"Jeu", 'hint':"Indices",
             "accept": "Accepter", "reject": "Rejetter", "dist": "Distribution",
-            "give":"Donner Cartes", "play":"Jouer", "pass":"Passer", "result":"Résultats de la partie",
+            "give":"Donner Cartes", "play":"Jouer", "pass":"Passer", "result":"Resultats de la partie",
             "next":"Suivant", "player_id":"Joueur 1", "next_game":"Partie Suivante",
-            "seq_det":"Séquence Détectée", "seq_det2":"Séquence Détectée donner des cartes",
-            "started":"Parties Démarrées", "ended":"Parties Terminées", "From":"De", "to": "à",
+            "seq_det":"Sequence Detectee", "seq_det2":"Sequence Detectee donner des cartes",
+            "started":"Parties Demarrees", "ended":"Parties Terminees", "From":"De", "to": "a",
             "stats":"Statistiques",
             'hint2':"Indices\n\n"\
-                "Le Président donne\n 2 cartes au nul\n\n\n"\
+                "Le President donne\n 2 cartes au nul\n\n\n"\
                 "Le Vice donne\n  1 carte au concierge\n\n\n"\
                 "Le Concierge donne sa \nmeilleure carte au Vice\n\n\n"\
-                "Le Nul donne ses 2\nmeilleures cartes au Président\n",
+                "Le Nul donne ses 2\nmeilleures cartes au President\n",
             'hint_choice':"Indices\n\n"\
-                "Le Président reçoit 2 cartes\nil peut refuser 1 fois\n\n\n"\
-                "Le Vice reçoit 2 cartes\n\n"\
+                "Le President recoit 2 cartes\nil peut refuser 1 fois\n\n\n"\
+                "Le Vice recoit 2 cartes\n\n"\
                 "Le Concierge 1 carte\n\n"\
                 "Le Nul 1 carte\n",
             'hint_choice2':"Indices\n\n"\
-                "Le Président reçoit 2 cartes\nil peut refuser 2 fois\n\n\n"\
-                "Le Vice reçoit 1 carte\nil peut refuser 1 fois\n\n\n"\
+                "Le President recoit 2 cartes\nil peut refuser 2 fois\n\n\n"\
+                "Le Vice recoit 1 carte\nil peut refuser 1 fois\n\n\n"\
                 "Le Concierge 1 carte\n\n"\
                 "Le Nul 1 carte\n",
             'hint_dist':"Indices\n\n"\
-                "Vous pouvez utilisez les flèches\npour jouer plus aisément\n\n\n"\
-                "Les flèches haut et bas\n"\
+                "Vous pouvez utilisez les fleches\npour jouer plus aisement\n\n\n"\
+                "Les fleches haut et bas\n"\
                 "choix entre jouer et passer\nchoix entre accepter ou refuser\n\n"\
-                "Gauche et droite pour\nsélectionner des cartes\n",
-            "start":"Démarrer Partie", "rules":self.regle, "Rules":"Règles"}
+                "Gauche et droite pour\nselectionner des cartes\n",
+            "start":"Demarrer Partie", "rules":self.regle, "Rules":"Regles"}
 
         self.english = {"title": "President\'s Game", "menu":"Menu", "language":"Language", "English":"English",
-            "Francais":"Français", "Sequence":"Give card\n if sequence", "No_Seq":"Deactivate",
+            "Francais":"Francais", "Sequence":"Give card\n if sequence", "No_Seq":"Deactivate",
             "3_Card":"3 players", "4_Card":"4 players",
             "choice":"Choice Phase", "1_choice":"President has 1 choice",
             "2_choice":"President has 2 choice\n Vice has 1 choice",

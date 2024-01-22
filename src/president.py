@@ -11,14 +11,19 @@
 # Current Version (v1.0 - 21 January 2024):
 #pylint: disable=wildcard-import,line-too-long,unused-wildcard-import
 #pylint: disable=wildcard-import,unused-wildcard-import,line-too-long, too-many-lines
+# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_3.py
 try:
-    import simplegui # type: ignore
+    import simplegui
+
+    import user309_Qz4BBPIZtH_11 as draw
+    from user309_Qz4BBPIZtH_11 import LanguageVal, Rectangle, DrawTurn, DrawHand, DrawStatus, get_names
+    from user309_Kd3jylJSQd_0 import Player, Hand, Deck, POSITIONS
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
-import card
-import draw
-from draw import *
-from card import *
+
+    import draw
+    from card import Player, Hand, Deck, POSITIONS
+    from draw import LanguageVal, Rectangle, DrawTurn, DrawHand, DrawStatus, get_names
 
 KEY_ENTER = 13
 KEY_UP   =  simplegui.KEY_MAP["up"]
@@ -169,11 +174,10 @@ class MenuOptions(Screen):
         self.update = update
 
     def draw(self, canvas):
+        super().draw(canvas)
         if self.count == 1:
             for key, l_val in self._tog.items():
                 self.update_list(key, l_val[0], False, l_val[1], force=True)
-        return super().draw(canvas)
-
     def s_main(self):
         """ start function """
         self._set["state"] = "MAIN"
@@ -242,8 +246,8 @@ class Stats(Screen):
         s_4 = d_val["to"]
         str_val = f"{s_1} {started}  /  {s_2} {completed}\n\n"
         for count, val in enumerate(self.stats["last_games"]):
-            pos_0 = card.POSITIONS[val[0]]
-            pos_1 = card.POSITIONS[val[1]]
+            pos_0 = POSITIONS[val[0]]
+            pos_1 = POSITIONS[val[1]]
             str_val += f"({count:2d})  {s_3}   {pos_0 : <12}  {s_4} {pos_1 : <12} \n"
         self._disp["empty"].set_text(str_val)
 
@@ -1018,7 +1022,7 @@ class MainGame(Screen):
         self.d_next = Rectangle(900, 90+3*96-40, 200, 40, ctext="blue", text="")
         self.d_status = DrawStatus(players, 0, 0)
         self.d_turn   = DrawTurn(200,  0)
-        d_val = {True:10, False:46}
+        d_val = {True:25, False:46}
         c_val = self._set["choice"] == "2_choice" and self._set["position"] != "pres"
         self.d_hand   = DrawHand(d_val[c_val], 452, Hand([]))
         for _, player in enumerate(players):
@@ -1133,7 +1137,7 @@ class MainGame(Screen):
             self.players = self.reorder_players()
         self.d_status = DrawStatus(self.players, 0, 0)
         self.d_turn   = DrawTurn(200,  0)
-        d_val = {True:46, False:10}
+        d_val = {True:46, False:25}
         c_val = self._set["choice"] == "1_choice" and self._set["position"] == "pres"
         self.d_hand   = DrawHand(d_val[c_val], 452, Hand([]))
         for _, player in enumerate(self.players):
@@ -1247,27 +1251,23 @@ class Game:
         val = self.d_stat[self.d_out["state"]]
         val.click_pos(pos)
 
-class Background(simplegui.Frame):
+class Background():
     """ Define background for card game """
 
     def __init__(self, name, width, height, color):
         """ Initializes the background """
         d_val = {"Big":1.5, "Normal":1, "Small":0.5}
         const = d_val[draw.screen_size]
-        super().__init__(name, int(width*const), int(height*const), 0)
+
+        self.frame = simplegui.create_frame(name, int(width*const), int(height*const), 0)
         self.default = "Player 1"
         self.game = Game(self.default)
 
-        self.set_canvas_background(color)
-        self.set_keydown_handler(self.game.key_handler)
-        self.set_mouseclick_handler(self.game.click_pos)
-        self.set_draw_handler(self.game.draw)
-        self.start()
-
-    def input_handler(self, new_text):
-        """ accept choice  """
-        if new_text == "":
-            self.input.set_text(" ")
+        self.frame.set_keydown_handler(self.game.key_handler)
+        self.frame.set_canvas_background(color)
+        self.frame.set_mouseclick_handler(self.game.click_pos)
+        self.frame.set_draw_handler(self.game.draw)
+        self.frame.start()
 
 def run_small_screen():
     """ run program with small screen resolution """

@@ -10,6 +10,7 @@
 #
 # Current Version (v1.0 - 21 January 2024):
 #pylint: disable=wildcard-import,line-too-long,unused-wildcard-import
+# File saved in : https://py3.codeskulptor.org/#user309_Kd3jylJSQd_0.py
 import random
 
 SUITS = ('C', 'S', 'H', 'D')
