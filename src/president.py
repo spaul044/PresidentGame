@@ -13,7 +13,7 @@
 #pylint: disable=wildcard-import,unused-wildcard-import,line-too-long, too-many-lines
 # pyright: reportMissingImports=false
 
-# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_9.py
+# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_10.py
 # Github project : https://github.com/spaul044/PresidentGame
 
 try:
@@ -319,9 +319,9 @@ class PlayTurn:
 
         self.d_turn = turn
         self.d_hand = hand
-        self.d_next = Rectangle(850, 280, 250, 170, ctext="blue", text="", font=40)
-        self.d_play = Rectangle(850, 200, 250,  115, ctext="blue", text="", font=40)
-        self.d_pass = Rectangle(850, 335, 250, 115, ctext="blue", text="", font=40)
+        self.d_next = Rectangle(850, 280, 250, 120, ctext="blue", text="", font=40)
+        self.d_play = Rectangle(850, 200, 250, 110, ctext="blue", text="", font=40)
+        self.d_pass = Rectangle(850, 335, 250, 110, ctext="blue", text="", font=40)
         self.hint   = Rectangle(850, 80, 250, 200, ctext="blue", font = 14)
         self.hint.set_text(self.lang['hint_dist'])
 
@@ -396,7 +396,7 @@ class PlayTurn:
                     self.seq_pos += 1
                 else:
                     if self.player_state == "HUMAN_WAIT":
-                        self.d_play.set_pos( 850, 200, 250, 250 )
+                        #self.d_play.set_pos( 850, 200, 250, 250 )
                         self.d_hand.unselect_all_cards()
                         self.d_hand.select_lowest_cards(nb_cards)
                         if player.nb_cards() == 0:
@@ -405,8 +405,8 @@ class PlayTurn:
                         else:
                             self.player_state = "HUMAN_SEQ_VALIDATE"
                     elif self.player_state == "HUMAN_DONE":
-                        self.d_play.set_pos( 850, 200, 250, 115 )
-                        self.d_pass.set_pos( 850, 335, 250, 115 )
+                        #self.d_play.set_pos( 850, 200, 250, 80 )
+                        #self.d_pass.set_pos( 850, 335, 250, 80 )
                         if player.nb_cards() == 0:
                             self.seq_pos += 1
                             return
@@ -465,10 +465,10 @@ class PlayTurn:
                         self.d_hand.unselect_all_cards()
                         self.d_hand.select_lowest()
                         self.player_state = "HUMAN_VALIDATE_START"
-                        self.d_play.set_pos( 850, 200, 250, 250  )
+                        #self.d_play.set_pos( 850, 200, 250, 250  )
                     elif self.player_state == "HUMAN_DONE":
-                        self.d_play.set_pos( 850, 200, 250, 115 )
-                        self.d_pass.set_pos( 850, 335, 250, 115 )
+                        #self.d_play.set_pos( 850, 200, 250, 80 )
+                        #self.d_pass.set_pos( 850, 335, 250, 80 )
                         cards = self.d_hand.get_selected_cards()
                         player.give_specific_cards(cards)
                         hand = Hand(cards)
@@ -511,11 +511,11 @@ class PlayTurn:
                         if len(r_val) != 0:
                             self.d_hand.select_specific_cards(r_cards[0])
                             self.player_state = "HUMAN_VALIDATE"
-                            self.d_play.set_pos( 850, 200, 250, 115 )
-                            self.d_pass.set_pos( 850, 335, 250, 115 )
+                            #self.d_play.set_pos( 850, 200, 250, 80 )
+                            #self.d_pass.set_pos( 850, 335, 250, 80 )
                         else :
                             self.player_state = "HUMAN_PASS"
-                            self.d_play.set_pos( 850, 200, 250, 250  )
+                            #self.d_play.set_pos( 850, 200, 250, 250  )
                     elif self.player_state == "HUMAN_DONE":
                         self.first = False
                         cards = self.d_hand.get_selected_cards()
@@ -705,7 +705,7 @@ class Distribute:
         self.d_turn   = turn
         self.d_hand   = hand
         self.hint = Rectangle(850, 80, 250, 250, ctext="blue", font = 14)
-        self.dist = Rectangle(850, 330, 250, 100, ctext="blue", text="Give Choice", font = 34)
+        self.dist = Rectangle(850, 330, 250, 100, ctext="blue", text="Give Choice", font = 32)
         self.t_list = {self.hint:"hint2", self.dist:"give", self.d_turn:"dist"}
 
         self.update_language(self.lang)
@@ -1037,7 +1037,7 @@ class MainGame(Screen):
         self.d_in["reset"]   = ( 850,  40,  300,  40, "black", "blue",  "", "white", 30)
 
         self.frame_count = 30
-        self.d_next = Rectangle(850, 330, 250, 100, ctext="blue", text="")
+        self.d_next = Rectangle(850, 330, 250, 100, ctext="blue", text="", font=32)
         self.d_status = DrawStatus(players, 0, 0)
         self.d_turn   = DrawTurn(200,  0)
         d_val = {True:20, False:46}
@@ -1303,4 +1303,5 @@ def run_big_screen():
     draw.screen_size = "Big"
     Background("Jeu du President", 1100, 550, "Green")
 
-run_big_screen()
+if __name__ == "__main__":
+    run_big_screen()
