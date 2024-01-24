@@ -8,15 +8,19 @@
 #
 # Programming - Samuel Paul (samuelspaul@gmail.com)
 #
-# Current Version (v1.0 - 21 January 2024):
+# Current Version (v1.0 - 23 January 2024):
 #pylint: disable=wildcard-import,line-too-long,unused-wildcard-import
 #pylint: disable=wildcard-import,unused-wildcard-import,line-too-long, too-many-lines
-# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_3.py
+# pyright: reportMissingImports=false
+
+# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_9.py
+# Github project : https://github.com/spaul044/PresidentGame
+
 try:
     import simplegui
 
-    import user309_Qz4BBPIZtH_11 as draw
-    from user309_Qz4BBPIZtH_11 import LanguageVal, Rectangle, DrawTurn, DrawHand, DrawStatus, get_names
+    import user309_Qz4BBPIZtH_16 as draw
+    from user309_Qz4BBPIZtH_16 import LanguageVal, Rectangle, DrawTurn, DrawHand, DrawStatus, get_names
     from user309_Kd3jylJSQd_0 import Player, Hand, Deck, POSITIONS
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
@@ -139,26 +143,26 @@ class MenuOptions(Screen):
 
         self.d_in  = {}
         self.d_in["title"]    = (    0,    0,  300,  50, "black", "white", "", "blue",  32)
-        self.d_in["language"] = (    0,  100,  200,  60, "black", "white", "", "blue",  32)
+        self.d_in["language"] = (    0,  100,  200,  60, "black", "white", "", "blue",  28)
         self.d_in["Francais"] = (  300,  100,  200,  60, "black", "white", "", "Black", 32)
         self.d_in["English"]  = (  600,  100,  200,  60, "black", "white", "", "Black", 32)
         self.d_in["Sequence"] = (    0,  180,  200,  60, "black", "white", "", "blue",  24)
         self.d_in["No_Seq"]   = (  300,  180,  200,  60, "black", "white", "", "Black", 28)
         self.d_in["3_Card"]   = (  600,  180,  200,  60, "black", "white", "", "Black", 28)
         self.d_in["4_Card"]   = (  900,  180,  200,  60, "black", "white", "", "Black", 28)
-        self.d_in["choice"]   = (    0,  260,  200,  60, "black", "white", "", "blue",  25)
-        self.d_in["1_choice"] = (  300,  260,  200,  60, "black", "white", "", "Black", 18)
-        self.d_in["2_choice"] = (  600,  260,  200,  60, "black", "white", "", "Black", 18)
-        self.d_in["exchange"] = (    0,  340,  200,  60, "black", "white", "", "blue",  22)
-        self.d_in["lowest"]   = (  300,  340,  200,  60, "black", "white", "", "Black", 24)
-        self.d_in["select"]   = (  600,  340,  200,  60, "black", "white", "", "Black", 24)
-        self.d_in["position"] = (    0,  420,  200,  60, "black", "white", "", "blue",  32)
-        self.d_in["pres"]     = (  250,  420,  180,  60, "black", "white", "", "Black", 32)
-        self.d_in["vice"]     = (  450,  420,  180,  60, "black", "white", "", "Black", 32)
-        self.d_in["conc"]     = (  650,  420,  180,  60, "black", "white", "", "Black", 32)
-        self.d_in["nul"]      = (  850,  420,  180,  60, "black", "white", "", "Black", 32)
+        self.d_in["choice"]   = (    0,  260,  200,  60, "black", "white", "", "blue",  24)
+        self.d_in["1_choice"] = (  300,  260,  200,  60, "black", "white", "", "Black", 16)
+        self.d_in["2_choice"] = (  600,  260,  200,  60, "black", "white", "", "Black", 16)
+        self.d_in["exchange"] = (    0,  340,  200,  60, "black", "white", "", "blue",  20)
+        self.d_in["lowest"]   = (  300,  340,  200,  60, "black", "white", "", "Black", 22)
+        self.d_in["select"]   = (  600,  340,  200,  60, "black", "white", "", "Black", 22)
+        self.d_in["position"] = (    0,  420,  200,  60, "black", "white", "", "blue",  30)
+        self.d_in["pres"]     = (  250,  420,  180,  60, "black", "white", "", "Black", 30)
+        self.d_in["vice"]     = (  450,  420,  180,  60, "black", "white", "", "Black", 30)
+        self.d_in["conc"]     = (  650,  420,  180,  60, "black", "white", "", "Black", 30)
+        self.d_in["nul"]      = (  850,  420,  180,  60, "black", "white", "", "Black", 30)
         self.d_in["options"]  = (  500,    0,  180,  50, "black", "white", "", "Red",   32)
-        self.d_in["main"]   = ( 950,   0,  200,  40, "black", "blue",  "", "white", 20)
+        self.d_in["main"]   = ( 950,   0,  200,  40, "black", "blue",  "", "white", 16)
         self.d_in["Game"] = ( 850,   0,  100,  40, "black", "blue",  "", "white", 20)
 
         self.d_tog = {}
@@ -315,14 +319,14 @@ class PlayTurn:
 
         self.d_turn = turn
         self.d_hand = hand
-        self.d_next = Rectangle(950, 90+3*96-40, 150, 40, ctext="blue", text="")
-        self.d_play = Rectangle(950, 90+3*96-40, 150, 40, ctext="blue", text="")
-        self.d_pass = Rectangle(950, 90+3*96, 150, 40, ctext="blue", text="")
-        self.hint   = Rectangle(850, 80, 250, 260, ctext="blue", font = 18)
+        self.d_next = Rectangle(850, 280, 250, 170, ctext="blue", text="", font=40)
+        self.d_play = Rectangle(850, 200, 250,  115, ctext="blue", text="", font=40)
+        self.d_pass = Rectangle(850, 335, 250, 115, ctext="blue", text="", font=40)
+        self.hint   = Rectangle(850, 80, 250, 200, ctext="blue", font = 14)
         self.hint.set_text(self.lang['hint_dist'])
 
         self.player_state = "HUMAN_WAIT"
-        self.state      = "PLAY"
+        self.state      = "FIRST"
         self.count      = 0
         self.turn_count = 0
         self.start_pos  = 0
@@ -377,7 +381,7 @@ class PlayTurn:
 
     def update_turn(self):
         """ click handler """
-        if self.state in ["WAIT", "NEXT", "NEXT_GAME", "PLAY_NEXT"]:
+        if self.state in ["WAIT", "NEXT", "NEXT_GAME", "PLAY_NEXT", "FIRST"]:
             return
         elif self.state == "SEQUENCE_GIVE":
             player   = self.seq_data[0][self.seq_pos]
@@ -392,6 +396,7 @@ class PlayTurn:
                     self.seq_pos += 1
                 else:
                     if self.player_state == "HUMAN_WAIT":
+                        self.d_play.set_pos( 850, 200, 250, 250 )
                         self.d_hand.unselect_all_cards()
                         self.d_hand.select_lowest_cards(nb_cards)
                         if player.nb_cards() == 0:
@@ -400,6 +405,8 @@ class PlayTurn:
                         else:
                             self.player_state = "HUMAN_SEQ_VALIDATE"
                     elif self.player_state == "HUMAN_DONE":
+                        self.d_play.set_pos( 850, 200, 250, 115 )
+                        self.d_pass.set_pos( 850, 335, 250, 115 )
                         if player.nb_cards() == 0:
                             self.seq_pos += 1
                             return
@@ -458,8 +465,10 @@ class PlayTurn:
                         self.d_hand.unselect_all_cards()
                         self.d_hand.select_lowest()
                         self.player_state = "HUMAN_VALIDATE_START"
+                        self.d_play.set_pos( 850, 200, 250, 250  )
                     elif self.player_state == "HUMAN_DONE":
-                        self.first = False
+                        self.d_play.set_pos( 850, 200, 250, 115 )
+                        self.d_pass.set_pos( 850, 335, 250, 115 )
                         cards = self.d_hand.get_selected_cards()
                         player.give_specific_cards(cards)
                         hand = Hand(cards)
@@ -502,10 +511,11 @@ class PlayTurn:
                         if len(r_val) != 0:
                             self.d_hand.select_specific_cards(r_cards[0])
                             self.player_state = "HUMAN_VALIDATE"
-                            self.d_pass.set_pos( 950, 90+3*96 )
+                            self.d_play.set_pos( 850, 200, 250, 115 )
+                            self.d_pass.set_pos( 850, 335, 250, 115 )
                         else :
                             self.player_state = "HUMAN_PASS"
-                            self.d_pass.set_pos( 950, 90+3*96-40 )
+                            self.d_play.set_pos( 850, 200, 250, 250  )
                     elif self.player_state == "HUMAN_DONE":
                         self.first = False
                         cards = self.d_hand.get_selected_cards()
@@ -536,6 +546,10 @@ class PlayTurn:
 
     def click_pos(self, c_pos):
         """ click handler function """
+        if self.state == "FIRST" and self.d_next.is_click(c_pos):
+            self.first = False
+            self.state = "PLAY"
+
         if self.state == "PLAY_START":
             self.d_hand.click_pos(c_pos)
 
@@ -578,6 +592,10 @@ class PlayTurn:
         j_val = simplegui.KEY_MAP["j"]
         s_val = simplegui.KEY_MAP["s"]
         n_val = simplegui.KEY_MAP["n"]
+
+        if self.state == "FIRST" and (key in [s_val, p_val, n_val] or key in KEY_ALL):
+            self.first = False
+            self.state = "PLAY"
 
         if self.player_state == "HUMAN_VALIDATE_START":
             if key in [KEY_LEFT, KEY_A]:
@@ -633,7 +651,7 @@ class PlayTurn:
         if self.first:
             self.hint.draw(canvas)
 
-        if self.state in ["NEXT", "SEQUENCE"] or (self.pos == len(self.hand_turn) and len(self.hand_turn) != 0):
+        if self.state in ["NEXT", "SEQUENCE", "FIRST"] or (self.pos == len(self.hand_turn) and len(self.hand_turn) != 0):
             if self.refresh == 0:
                 self.d_next.set_selected(not self.d_next.get_selected())
             self.d_next.draw(canvas)
@@ -646,7 +664,7 @@ class PlayTurn:
         if self.player_state == "HUMAN_VALIDATE":
             if self.refresh == 0:
                 self.d_play.set_selected(not self.d_play.get_selected())
-                self.d_pass.set_selected(    self.d_play.get_selected())
+                self.d_pass.set_selected(not self.d_play.get_selected())
             self.d_play.draw(canvas)
             self.d_pass.draw(canvas)
 
@@ -686,8 +704,8 @@ class Distribute:
 
         self.d_turn   = turn
         self.d_hand   = hand
-        self.hint = Rectangle(850, 80, 250, 320, ctext="blue", font = 18)
-        self.dist = Rectangle(600, 90+3*96, 190, 40, ctext="blue", text="Give Choice")
+        self.hint = Rectangle(850, 80, 250, 250, ctext="blue", font = 14)
+        self.dist = Rectangle(850, 330, 250, 100, ctext="blue", text="Give Choice", font = 34)
         self.t_list = {self.hint:"hint2", self.dist:"give", self.d_turn:"dist"}
 
         self.update_language(self.lang)
@@ -801,21 +819,22 @@ class Choice:
         self.d_order  = ["President", "Vice", "Concierge", "Nul", "Done", "Give"]
         self.d_choice = { True: {"President":[2, 1], "Vice":[2, 0], "Concierge":[1,0], "Nul":[1,0], "Done":[0,0]},
                           False:{"President":[2, 2], "Vice":[1, 1], "Concierge":[1,0], "Nul":[1,0], "Done":[0,0]} }
-        self.blink  = Rectangle(650, 50, 120, 80, col1="red", text="" )
-        self.blink2 = Rectangle(650, 50+96, 120, 80, col1="red",text="" )
-        self.acc  = Rectangle(600, 50, 120, 40, ctext="black", text="")
-        self.rej  = Rectangle(600, 90, 120, 40, ctext="black", text="")
-        self.acc1 = Rectangle(600, 50+96, 120, 40, ctext="black", text="")
-        self.rej1 = Rectangle(600, 90+96, 120, 40, ctext="black", text="")
-        self.dist = Rectangle(600, 90+3*96, 150, 40, ctext="blue", text="")
-        self.hint = Rectangle(850, 80, 250, 250, ctext="blue", font = 18)
+        self.acc  = Rectangle(600, 50, 180, 40, ctext="black", text="")
+        self.rej  = Rectangle(600, 90, 180, 40, ctext="black", text="")
+        self.acc1 = Rectangle(600, 50+96, 180, 40, ctext="black", text="")
+        self.rej1 = Rectangle(600, 90+96, 180, 40, ctext="black", text="")
+        self.dist = Rectangle(850, 330, 250, 100, ctext="blue", text="", font=32)
+        self.hint = Rectangle(850, 80, 250, 250, ctext="blue", font = 14)
+        self.acc2  = Rectangle(850, 330, 250, 110, ctext="blue", text="")
+        self.rej2  = Rectangle(850, 440, 250, 110, ctext="blue", text="")
 
         self.t_list = {self.acc:"accept", self.rej:"reject",
-                       self.acc1:"accept", self.rej1:"reject", self.dist:"dist"}
+                       self.acc1:"accept", self.rej1:"reject",
+                       self.acc2:"accept", self.rej2:"reject", self.dist:"dist"}
 
         self.l_acc = [self.acc, self.acc1]
         self.l_rej = [self.rej, self.rej1]
-        self.l_blink = [self.blink, self.blink2]
+        self.l_blink = []
         choice = self.settings["choice"] == "1_choice" and self.settings["position"] == "pres"
         self.d_val = self.d_choice[choice]
         self.count = 0
@@ -910,9 +929,9 @@ class Choice:
         """ click handler function """
         for pos in range(2):
             if self.pos == pos and self.players[pos].is_human():
-                if self.l_acc[pos].is_click(c_pos):
+                if self.l_acc[pos].is_click(c_pos) or self.acc2.is_click(c_pos):
                     self.response = True
-                elif self.l_rej[pos].is_click(c_pos):
+                elif self.l_rej[pos].is_click(c_pos) or self.rej2.is_click(c_pos):
                     self.response = False
                 if self.response is True or self.response is False:
                     self.l_acc[pos].set_selected(self.response)
@@ -970,24 +989,23 @@ class Choice:
         if self.refresh == 0:
             self.refresh = 30
             self.update_status()
-            for pos in range(2):
-                if self.pos == pos and self.players[self.pos].is_human():
-                    self.l_blink[pos].set_selected(not self.l_blink[pos].get_selected())
+            if self.pos in [0, 1] and self.players[self.pos].is_human():
+                self.acc2.set_selected(not self.acc2.get_selected())
+                self.rej2.set_selected(not self.acc2.get_selected())
             if self.pos == 4:
                 self.dist.set_selected( not self.dist.get_selected() )
 
         self.hint.draw(canvas)
-        if self.pos == 0 and self.count > 0 and\
-            self.players[self.pos].is_human():
-            self.l_blink[self.pos].draw(canvas)
         if self.pos <= 4:
             self.acc.draw(canvas)
             self.rej.draw(canvas)
 
+        if self.pos in [0, 1] and self.players[self.pos].is_human():
+            self.acc2.draw(canvas)
+            self.rej2.draw(canvas)
+
         if self.pos >= 1 and  self.d_val[self.d_order[1]][1] == 1:
             #Draw VP option, if he has a choice
-            if self.pos == 1 and self.players[self.pos].is_human():
-                self.l_blink[self.pos].draw(canvas)
             self.acc1.draw(canvas)
             self.rej1.draw(canvas)
 
@@ -1014,15 +1032,15 @@ class MainGame(Screen):
         self.stats = stats
         self.deck  = Deck()
         self.d_in  = {}
-        self.d_in["main"]   = ( 950,   0,  200,  40, "black", "blue",  "", "white", 20)
-        self.d_in["special"] = ( 850,   0,  100,  40, "black", "blue",  "", "white", 20)
+        self.d_in["main"]   = ( 950,   0,  200,  40, "black", "blue",  "", "white", 16)
+        self.d_in["special"] = ( 850,   0,  100,  40, "black", "blue",  "", "white", 16)
         self.d_in["reset"]   = ( 850,  40,  300,  40, "black", "blue",  "", "white", 30)
 
         self.frame_count = 30
-        self.d_next = Rectangle(900, 90+3*96-40, 200, 40, ctext="blue", text="")
+        self.d_next = Rectangle(850, 330, 250, 100, ctext="blue", text="")
         self.d_status = DrawStatus(players, 0, 0)
         self.d_turn   = DrawTurn(200,  0)
-        d_val = {True:25, False:46}
+        d_val = {True:20, False:46}
         c_val = self._set["choice"] == "2_choice" and self._set["position"] != "pres"
         self.d_hand   = DrawHand(d_val[c_val], 452, Hand([]))
         for _, player in enumerate(players):
@@ -1137,7 +1155,7 @@ class MainGame(Screen):
             self.players = self.reorder_players()
         self.d_status = DrawStatus(self.players, 0, 0)
         self.d_turn   = DrawTurn(200,  0)
-        d_val = {True:46, False:25}
+        d_val = {True:46, False:20}
         c_val = self._set["choice"] == "1_choice" and self._set["position"] == "pres"
         self.d_hand   = DrawHand(d_val[c_val], 452, Hand([]))
         for _, player in enumerate(self.players):

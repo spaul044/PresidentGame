@@ -9,10 +9,14 @@
 # Programming - Samuel Paul (samuelspaul@gmail.com)
 # Graphics    - Cards images from An Introduction to Interactive Programming in Python
 #
-# Current Version (v1.0 - 21 January 2024):
-# File saved in : https://py3.codeskulptor.org/#user309_Qz4BBPIZtH_11.py
-import random
+# Current Version (v1.0 - 23 January 2024):
+#pylint: disable=line-too-long
+#pyright: reportMissingImports=false
 
+# File saved in : https://py3.codeskulptor.org/#user309_Qz4BBPIZtH_16.py
+# Github project : https://github.com/spaul044/PresidentGame
+
+import random
 
 try:
     folder = "https://dl.dropboxusercontent.com/scl/fi" #pylint: disable=invalid-name
@@ -141,7 +145,7 @@ def gen_points(pos_x, pos_y, len_x, len_y, margin=0):
 class Rectangle:
     """ create rectangle class """
 
-    def __init__(self, posx, posy, lenx, leny, col1="black", col2 = "white", text="text", ctext="blue", font = 24):
+    def __init__(self, posx, posy, lenx, leny, col1="black", col2 = "white", text="text", ctext="blue", font = 20):
         """ Create rectangle """
         self._x = posx
         self._y = posy
@@ -162,10 +166,14 @@ class Rectangle:
         """ return pos """
         return [self._x, self._y]
 
-    def set_pos(self, posx, posy):
+    def set_pos(self, posx, posy, len_x=False, len_y=False):
         """ return pos """
         self._x = posx
         self._y = posy
+        if len_x is not False:
+            self._lx = len_x
+        if len_y is not False:
+            self._ly = len_y
         self._pt  = gen_points(self._x, self._y, self._lx, self._ly, 0)
         self._pt2 = gen_points(self._x, self._y, self._lx, self._ly, 2)
         self._pt3 = gen_points(self._x, self._y, self._lx, self._ly, 3)
@@ -395,7 +403,7 @@ class DrawHand:
         if rank == "2" and nb_input - 1 <= nb_out:
             if out.get_selected() and nb_input <= nb_out:
                 out.set_selected( False )
-                count = 0
+                count = 1
             else :
                 out.set_selected( True )
                 count = 1
@@ -407,6 +415,9 @@ class DrawHand:
                 if  out == card:
                     pass
                 elif count < nb_input - 1:
+                    count += 1
+                    card.set_selected( True )
+                elif count < nb_input and rank != "2":
                     count += 1
                     card.set_selected( True )
                 elif count == nb_input - 1 and card.get_selected():
@@ -439,7 +450,7 @@ class DrawHand:
         index = r_val.index(rank)  + d_val[left]
         if index < 0:
             index = len(r_val) -1
-        elif index == len(r_val):
+        elif index >= len(r_val):
             index = 0
 
         new_rank = r_val[index]
@@ -453,13 +464,13 @@ class DrawHand:
                 count += 1
 
     def right_key_pos_give(self):
-        """ return True if clicked on a card  """
+        """ right key handler  """
         nb_cards, l_cards, l_index = self.get_selected_index()
 
         l_cards[0].set_selected(False)
         if nb_cards == 1:
             index = l_index[0] + 1
-            if index == nb_cards:
+            if index >= nb_cards:
                 index = 0
             rank = self._lc[index].get_rank()
             for _, card in enumerate(self._lv):
@@ -469,13 +480,13 @@ class DrawHand:
             l_cards[0].set_selected(False)
 
     def left_key_pos_give(self):
-        """ return True if clicked on a card  """
+        """ left key handler  """
         nb_cards, l_cards, l_index = self.get_selected_index()
 
         l_cards[-1].set_selected(False)
         if nb_cards == 1:
             index = l_index[0] - 1
-            if index == -1:
+            if index <= -1:
                 index = nb_cards - 1
             rank = self._lc[index].get_rank()
             for _, card in enumerate(self._lv):
@@ -532,7 +543,6 @@ class DrawHand:
         self._old_sel = new_index
 
         self.unselect_all_cards()
-        #cards = [ self._lv[l_index[0]], self._lv[l_index[1]] ]
 
         for _, index in enumerate(l_index):
             card = self._lv[index]
@@ -556,6 +566,8 @@ class DrawHand:
             self.update_1_card_selected(l_index, left=True)
         elif nb_cards == 2:
             self.update_2_card_selected(nb_cards, l_index, left=True)
+        else:
+            self.update_2_card_selected(nb_cards, l_index, left=True)
 
     def right_key_pos_sequence(self):
         """ select card to give in case of sequence """
@@ -574,7 +586,6 @@ class DrawHand:
         _,  _, l_index = self.get_selected_index()
 
         out = card.get_card()
-        self._old_sel = self._lv.index(card)
         if card.get_selected() is True:
             return out
         card.set_selected(True)
@@ -585,6 +596,7 @@ class DrawHand:
         else :
             t_pos = l_index[0]
         self._lv[t_pos].set_selected(False)
+        self._old_sel = self._lv.index(card)
         return out
 
 
@@ -601,7 +613,6 @@ class DrawHand:
         if card.get_selected() is True:
             return out
         card.set_selected(True)
-        self._old_sel = self._lv.index(card)
         if role == 1: #1 card always selected
             self._lv[l_index[0]].set_selected(False)
         if role == 0: #2 cards always selected
@@ -612,6 +623,7 @@ class DrawHand:
             else :
                 t_pos = l_index[0]
             self._lv[t_pos].set_selected(False)
+            self._old_sel = self._lv.index(card)
         return out
 
     def click_pos_start(self, pos):
