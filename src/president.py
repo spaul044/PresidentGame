@@ -13,14 +13,14 @@
 #pylint: disable=wildcard-import,unused-wildcard-import,line-too-long, too-many-lines
 # pyright: reportMissingImports=false
 
-# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_10.py
+# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_13.py
 # Github project : https://github.com/spaul044/PresidentGame
 
 try:
     import simplegui
 
-    import user309_Qz4BBPIZtH_16 as draw
-    from user309_Qz4BBPIZtH_16 import LanguageVal, Rectangle, DrawTurn, DrawHand, DrawStatus, get_names
+    import user309_Qz4BBPIZtH_17 as draw
+    from user309_Qz4BBPIZtH_17 import LanguageVal, Rectangle, DrawTurn, DrawHand, DrawStatus, get_names
     from user309_Kd3jylJSQd_0 import Player, Hand, Deck, POSITIONS
 except ImportError:
     import SimpleGUICS2Pygame.simpleguics2pygame as simplegui
@@ -101,11 +101,19 @@ class Screen:
     def update_list(self, key, list_val, pos, func=False, force=False):
         """ update a list of boxes """
         for val in list_val:
-            if val in self._disp and (force is True or self._disp[val].is_click(pos) ):
+            if val in self._disp and pos is not False and self._disp[val].is_click(pos):
                 for tmp in list_val:
                     self._disp[tmp].set_selected(False)
                 self._disp[val].set_selected(True)
                 self._set[key] = val
+                if func:
+                    func()
+            elif val in self._disp and force is True:
+                for tmp in list_val:
+                    if self._set[key] == tmp:
+                        self._disp[tmp].set_selected(True)
+                    else :
+                        self._disp[tmp].set_selected(False)
                 if func:
                     func()
 
@@ -179,9 +187,9 @@ class MenuOptions(Screen):
 
     def draw(self, canvas):
         super().draw(canvas)
-        if self.count == 1:
+        if self.count%60 == 1:
             for key, l_val in self._tog.items():
-                self.update_list(key, l_val[0], False, l_val[1], force=True)
+                self.update_list(key, l_val[0], False, False, force=True)
     def s_main(self):
         """ start function """
         self._set["state"] = "MAIN"
@@ -319,9 +327,9 @@ class PlayTurn:
 
         self.d_turn = turn
         self.d_hand = hand
-        self.d_next = Rectangle(850, 280, 250, 120, ctext="blue", text="", font=40)
-        self.d_play = Rectangle(850, 200, 250, 110, ctext="blue", text="", font=40)
-        self.d_pass = Rectangle(850, 335, 250, 110, ctext="blue", text="", font=40)
+        self.d_next = Rectangle(850, 280, 250, 100, ctext="blue", text="", font=40)
+        self.d_play = Rectangle(850, 200, 250, 100, ctext="blue", text="", font=40)
+        self.d_pass = Rectangle(850, 335, 250, 100, ctext="blue", text="", font=40)
         self.hint   = Rectangle(850, 80, 250, 200, ctext="blue", font = 14)
         self.hint.set_text(self.lang['hint_dist'])
 
@@ -381,7 +389,7 @@ class PlayTurn:
 
     def update_turn(self):
         """ click handler """
-        if self.state in ["WAIT", "NEXT", "NEXT_GAME", "PLAY_NEXT", "FIRST"]:
+        if self.state in ["WAIT", "NEXT", "NEXT_GAME", "NEXT_PLAY", "FIRST"]:
             return
         elif self.state == "SEQUENCE_GIVE":
             player   = self.seq_data[0][self.seq_pos]
@@ -392,11 +400,13 @@ class PlayTurn:
                     if cards is not False :
                         self.d_turn.add_hand(player, Hand(cards))
                     if player.nb_cards() == 0:
-                        self.winners.append(player)
+                        if len(self.winners) == 0 or self.winners[-1] != player:
+                            self.winners.append(player)
                     self.seq_pos += 1
                 else:
                     if self.player_state == "HUMAN_WAIT":
-                        #self.d_play.set_pos( 850, 200, 250, 250 )
+                        self.d_play.set_pos( 850, 200, 250, 100 )
+                        self.d_pass.set_pos( 850, 335, 250, 100 )
                         self.d_hand.unselect_all_cards()
                         self.d_hand.select_lowest_cards(nb_cards)
                         if player.nb_cards() == 0:
@@ -405,8 +415,8 @@ class PlayTurn:
                         else:
                             self.player_state = "HUMAN_SEQ_VALIDATE"
                     elif self.player_state == "HUMAN_DONE":
-                        #self.d_play.set_pos( 850, 200, 250, 80 )
-                        #self.d_pass.set_pos( 850, 335, 250, 80 )
+                        self.d_play.set_pos( 850, 200, 250, 100 )
+                        self.d_pass.set_pos( 850, 335, 250, 100 )
                         if player.nb_cards() == 0:
                             self.seq_pos += 1
                             return
@@ -414,13 +424,14 @@ class PlayTurn:
                         self.d_turn.add_hand(player, Hand(cards))
                         player.give_specific_cards(cards)
                         if player.nb_cards() == 0:
-                            self.winners.append(player)
+                            if len(self.winners) == 0 or self.winners[-1] != player:
+                                self.winners.append(player)
                         self.seq_pos += 1
             else:
                 self.seq_pos += 1
 
             if self.seq_pos == len(self.seq_data[0]):
-                self.state = "PLAY_NEXT"
+                self.state = "NEXT_PLAY"
         elif len(self.hand_turn) == 0:
             for count in range(self.start_pos, self.start_pos + len(self.players)):
                 pos = count % len(self.players)
@@ -459,16 +470,18 @@ class PlayTurn:
                     if len(self.hand_turn) == 1:
                         self.state = "PLAY"
                     if player.hand_empty():
-                        self.winners.append(player)
+                        if len(self.winners) == 0 or self.winners[-1] != player:
+                            self.winners.append(player)
                 else :
                     if self.player_state == "HUMAN_WAIT":
                         self.d_hand.unselect_all_cards()
                         self.d_hand.select_lowest()
                         self.player_state = "HUMAN_VALIDATE_START"
-                        #self.d_play.set_pos( 850, 200, 250, 250  )
+                        self.d_play.set_pos( 850, 200, 250, 100  )
+                        self.d_pass.set_pos( 850, 335, 250, 100 )
                     elif self.player_state == "HUMAN_DONE":
-                        #self.d_play.set_pos( 850, 200, 250, 80 )
-                        #self.d_pass.set_pos( 850, 335, 250, 80 )
+                        self.d_play.set_pos( 850, 200, 250, 100 )
+                        self.d_pass.set_pos( 850, 335, 250, 100 )
                         cards = self.d_hand.get_selected_cards()
                         player.give_specific_cards(cards)
                         hand = Hand(cards)
@@ -480,7 +493,8 @@ class PlayTurn:
                         if len(self.hand_turn) == 1:
                             self.state = "PLAY"
                         if player.hand_empty():
-                            self.winners.append(player)
+                            if len(self.winners) == 0 or self.winners[-1] != player:
+                                self.winners.append(player)
                         self.player_state = "HUMAN_WAIT"
             elif self.pos < len(self.hand_turn):
                 pos = self.hand_turn[self.pos]
@@ -500,7 +514,8 @@ class PlayTurn:
                         if cards[0].get_rank() == "O":
                             self.state = "NEXT"
                         if player.hand_empty():
-                            self.winners.append(player)
+                            if len(self.winners) == 0 or self.winners[-1] != player:
+                                self.winners.append(player)
                     else :
                         self.d_turn.add_hand(player, False)
                 else :
@@ -511,12 +526,14 @@ class PlayTurn:
                         if len(r_val) != 0:
                             self.d_hand.select_specific_cards(r_cards[0])
                             self.player_state = "HUMAN_VALIDATE"
-                            #self.d_play.set_pos( 850, 200, 250, 80 )
-                            #self.d_pass.set_pos( 850, 335, 250, 80 )
+                            self.d_play.set_pos( 850, 200, 250, 100 )
+                            self.d_pass.set_pos( 850, 335, 250, 100 )
                         else :
                             self.player_state = "HUMAN_PASS"
-                            #self.d_play.set_pos( 850, 200, 250, 250  )
+                            self.d_play.set_pos( 850, 200, 250, 100  )
+                            self.d_pass.set_pos( 850, 200, 250, 100 )
                     elif self.player_state == "HUMAN_DONE":
+                        self.d_next.set_pos( 850, 200, 250, 100 )
                         self.first = False
                         cards = self.d_hand.get_selected_cards()
                         self.pos += 1
@@ -529,7 +546,8 @@ class PlayTurn:
                             if cards[0].get_rank() == old_cards[0].get_rank():
                                 self.state = "NEXT"
                             if player.hand_empty():
-                                self.winners.append(player)
+                                if len(self.winners) == 0 or self.winners[-1] != player:
+                                    self.winners.append(player)
                         else :
                             self.d_turn.add_hand(player, False)
                         self.player_state = "HUMAN_WAIT"
@@ -577,7 +595,7 @@ class PlayTurn:
         elif self.state == "SEQUENCE_GIVE":
             if self.player_state == "HUMAN_SEQ_VALIDATE" and self.d_hand.get_selected_cards() is not False:
                 self.d_hand.click_pos_give_cards(c_pos)
-                if self.d_play.is_click(c_pos):
+                if self.d_next.is_click(c_pos):
                     self.player_state = "HUMAN_DONE"
         elif self.state in ["NEXT", "NEXT_PLAY"] or (self.pos == len(self.hand_turn) and len(self.hand_turn) != 0):
             if self.d_next.is_click(c_pos):
@@ -705,7 +723,7 @@ class Distribute:
         self.d_turn   = turn
         self.d_hand   = hand
         self.hint = Rectangle(850, 80, 250, 250, ctext="blue", font = 14)
-        self.dist = Rectangle(850, 330, 250, 100, ctext="blue", text="Give Choice", font = 32)
+        self.dist = Rectangle(850, 330, 250, 100, ctext="blue", text="Give Choice", font = 30)
         self.t_list = {self.hint:"hint2", self.dist:"give", self.d_turn:"dist"}
 
         self.update_language(self.lang)
@@ -825,8 +843,8 @@ class Choice:
         self.rej1 = Rectangle(600, 90+96, 180, 40, ctext="black", text="")
         self.dist = Rectangle(850, 330, 250, 100, ctext="blue", text="", font=32)
         self.hint = Rectangle(850, 80, 250, 250, ctext="blue", font = 14)
-        self.acc2  = Rectangle(850, 330, 250, 110, ctext="blue", text="")
-        self.rej2  = Rectangle(850, 440, 250, 110, ctext="blue", text="")
+        self.acc2  = Rectangle(850, 330, 250, 100, ctext="blue", text="", font = 32)
+        self.rej2  = Rectangle(850, 450, 250, 100, ctext="blue", text="", font = 32)
 
         self.t_list = {self.acc:"accept", self.rej:"reject",
                        self.acc1:"accept", self.rej1:"reject",
@@ -1037,7 +1055,7 @@ class MainGame(Screen):
         self.d_in["reset"]   = ( 850,  40,  300,  40, "black", "blue",  "", "white", 30)
 
         self.frame_count = 30
-        self.d_next = Rectangle(850, 330, 250, 100, ctext="blue", text="", font=32)
+        self.d_next = Rectangle(850, 200, 250, 100, ctext="blue", text="", font=32)
         self.d_status = DrawStatus(players, 0, 0)
         self.d_turn   = DrawTurn(200,  0)
         d_val = {True:20, False:46}
@@ -1076,6 +1094,8 @@ class MainGame(Screen):
         self.d_turn.draw(canvas)
         self.d_status.draw(canvas)
         self.d_hand.draw(canvas)
+        d_val = { "Francais":"English", "English":"Francais" }
+        self._disp["special"].set_text(d_val[self._set["language"]])
         if self.state == 0:
             t_val = self.text_val("p_choices")
             self.d_turn.set_text(t_val)
@@ -1195,7 +1215,7 @@ class Game:
         self.players  = []
         self.stats    = {"nb_start":1, "nb_complete":0, "last_games":[]}
         self.d_out  = { "language":"Francais", "Sequence":"3_Card","choice":"2_choice",\
-                        "exchange":"lowest","position":"nul","state":state,\
+                        "exchange":"select","position":"nul","state":state,\
                         "restart":False}
         self.lang   = LanguageVal()
         self.generate_players()
@@ -1304,4 +1324,4 @@ def run_big_screen():
     Background("Jeu du President", 1100, 550, "Green")
 
 if __name__ == "__main__":
-    run_big_screen()
+    run_normal_screen()

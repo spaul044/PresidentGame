@@ -470,7 +470,7 @@ class DrawHand:
         l_cards[0].set_selected(False)
         if nb_cards == 1:
             index = l_index[0] + 1
-            if index >= nb_cards:
+            if index >= len(self._lv) :
                 index = 0
             rank = self._lc[index].get_rank()
             for _, card in enumerate(self._lv):
@@ -487,7 +487,7 @@ class DrawHand:
         if nb_cards == 1:
             index = l_index[0] - 1
             if index <= -1:
-                index = nb_cards - 1
+                index = len(self._lv) - 1
             rank = self._lc[index].get_rank()
             for _, card in enumerate(self._lv):
                 if card.get_card().get_rank()==rank:
@@ -882,8 +882,8 @@ class LanguageVal:
             "position":"Play as", "pres":"President", "vice":"Vice", "conc":"Concierge", "nul":"Nul",
             "options": "Options", "main":"Main menu", "reset":"Restart",
             "p_choices": "Choice Phase", "Game":"Game", "hint":"hint",
-            "accept": "accept", "reject": "reject", "dist": "Distribution",
-            "next":"next turn", "player_id":"Player 1", "next_game":"Next Game",
+            "accept": "Accept", "reject": "Reject", "dist": "Distribution",
+            "next":"Next Turn", "player_id":"Player 1", "next_game":"Next Game",
             "give":"Give choice", "play":"Play", "pass":"Pass", "result":"Game results",
             "seq_det":"Sequence Detected", "seq_det2":"Sequence Detected Giving Cards",
             "started":"Games Started", "ended":"Games Completed", "From":"From", "to": "to",
