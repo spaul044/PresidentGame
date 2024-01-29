@@ -13,7 +13,7 @@
 #pylint: disable=wildcard-import,unused-wildcard-import,line-too-long, too-many-lines
 # pyright: reportMissingImports=false
 
-# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_13.py
+# File saved in https://py3.codeskulptor.org/#user309_3lX3GsAY38_15.py
 # Github project : https://github.com/spaul044/PresidentGame
 
 try:
@@ -400,7 +400,7 @@ class PlayTurn:
                     if cards is not False :
                         self.d_turn.add_hand(player, Hand(cards))
                     if player.nb_cards() == 0:
-                        if len(self.winners) == 0 or self.winners[-1] != player:
+                        if len(self.winners) == 0 or player not in self.winners:
                             self.winners.append(player)
                     self.seq_pos += 1
                 else:
@@ -424,7 +424,7 @@ class PlayTurn:
                         self.d_turn.add_hand(player, Hand(cards))
                         player.give_specific_cards(cards)
                         if player.nb_cards() == 0:
-                            if len(self.winners) == 0 or self.winners[-1] != player:
+                            if len(self.winners) == 0 or player not in self.winners:
                                 self.winners.append(player)
                         self.seq_pos += 1
             else:
@@ -470,7 +470,7 @@ class PlayTurn:
                     if len(self.hand_turn) == 1:
                         self.state = "PLAY"
                     if player.hand_empty():
-                        if len(self.winners) == 0 or self.winners[-1] != player:
+                        if len(self.winners) == 0 or player not in self.winners:
                             self.winners.append(player)
                 else :
                     if self.player_state == "HUMAN_WAIT":
@@ -493,7 +493,7 @@ class PlayTurn:
                         if len(self.hand_turn) == 1:
                             self.state = "PLAY"
                         if player.hand_empty():
-                            if len(self.winners) == 0 or self.winners[-1] != player:
+                            if len(self.winners) == 0 or player not in self.winners:
                                 self.winners.append(player)
                         self.player_state = "HUMAN_WAIT"
             elif self.pos < len(self.hand_turn):
@@ -514,7 +514,7 @@ class PlayTurn:
                         if cards[0].get_rank() == "O":
                             self.state = "NEXT"
                         if player.hand_empty():
-                            if len(self.winners) == 0 or self.winners[-1] != player:
+                            if len(self.winners) == 0 or player not in self.winners:
                                 self.winners.append(player)
                     else :
                         self.d_turn.add_hand(player, False)
@@ -546,7 +546,7 @@ class PlayTurn:
                             if cards[0].get_rank() == old_cards[0].get_rank():
                                 self.state = "NEXT"
                             if player.hand_empty():
-                                if len(self.winners) == 0 or self.winners[-1] != player:
+                                if len(self.winners) == 0 or player not in self.winners:
                                     self.winners.append(player)
                         else :
                             self.d_turn.add_hand(player, False)
@@ -751,7 +751,7 @@ class Distribute:
 
     def click_pos(self, c_pos):
         """ click handler function """
-        if self.p_pos in [0, 1] and self.choice and self.p_pos == self.pos:
+        if self.p_pos in [0, 1] and self.choice:
             self.d_hand.click_pos_give(c_pos, self.player.get_role())
         if self.dist.is_click(c_pos) and self.pos == 0:
             l_cards = []
@@ -779,7 +779,7 @@ class Distribute:
         l_val = [ simplegui.KEY_MAP["d"], simplegui.KEY_MAP["j"],\
                  simplegui.KEY_MAP["g"] , simplegui.KEY_MAP["n"] ]
 
-        if self.p_pos in [0, 1] and self.choice and self.p_pos == self.pos:
+        if self.p_pos in [0, 1] and self.choice:
             if key in [KEY_DOWN, KEY_S]:
                 self.d_hand.down_key_sequence()
             elif key in [KEY_LEFT, KEY_A]:
@@ -1324,4 +1324,4 @@ def run_big_screen():
     Background("Jeu du President", 1100, 550, "Green")
 
 if __name__ == "__main__":
-    run_normal_screen()
+    run_big_screen()
